@@ -11,13 +11,15 @@ namespace PayrollApp.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class EmployeeList
     {
         public int ID { get; set; }
         public int EmployeeCode { get; set; }
         public string EmployeeName { get; set; }
         public int JobCode { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
         public System.DateTime JoiningDate { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }

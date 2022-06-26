@@ -14,7 +14,39 @@ namespace PayrollApp.Controllers
     {
         private PayrollEntities db = new PayrollEntities();
 
+        public ActionResult CalculatePayroll()
+        {
+            ViewBag.EmployeeCode = new SelectList(db.EmployeeLists, "EmployeeCode", "EmployeeName");
+            return View();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CalculatePayroll(CalculatePayroll payroll)
+        {
+            //DateTime time = DateTime.Now;
+            //if (ModelState.IsValid)
+            //{
+            //    var lastEmpID = db.EmployeeLists.OrderByDescending(i => i.ID).FirstOrDefault();
+            //    if (lastEmpID == null)
+            //    {
+            //        employeeList.EmployeeCode = 100000 + 1;
+            //    }
+            //    else
+            //    {
+            //        employeeList.EmployeeCode = 100000 + lastEmpID.ID + 1;
+            //    }
+
+            //    employeeList.CreatedDate = time;
+            //    employeeList.ModifiedDate = time;
+            //    db.EmployeeLists.Add(employeeList);
+            //    db.SaveChanges();
+            //    return RedirectToAction("Index");
+            //}
+
+            ViewBag.Employee = new SelectList(db.EmployeeLists, "EmployeeCode", "EmployeeName");
+            return View(payroll);
+        }
 
         // GET: EmployeeLists
         public ActionResult Index()
@@ -101,16 +133,16 @@ namespace PayrollApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                EmployeeList employee=db.EmployeeLists.Find(employeeList.ID);
+                EmployeeList employee = db.EmployeeLists.Find(employeeList.ID);
 
-                if(employee == null)
+                if (employee == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 else
                 {
                     employee.EmployeeName = employeeList.EmployeeName;
-                    employee.JobCode= employeeList.JobCode;
+                    employee.JobCode = employeeList.JobCode;
                     employee.JoiningDate = employeeList.JoiningDate;
                     employee.ModifiedDate = DateTime.Now;
                 }
