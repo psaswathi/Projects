@@ -46,7 +46,7 @@ namespace PayrollApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,JobCode,JobDesc,Salary,IsActive,CreatedDate,ModifiedDate,JobName")] JobTitleList jobTitleList)
+        public ActionResult Create(JobTitleList jobTitleList)
         {
             DateTime time = DateTime.Now;
             if (ModelState.IsValid)
@@ -92,7 +92,7 @@ namespace PayrollApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,JobCode,JobDesc,Salary,IsActive,CreatedDate,ModifiedDate,JobName")] JobTitleList jobTitleList)
+        public ActionResult Edit(JobTitleList jobTitleList)
         {
             DateTime time = DateTime.Now;
             if (ModelState.IsValid)
@@ -101,7 +101,6 @@ namespace PayrollApp.Controllers
                 jobTitle.JobName = jobTitleList.JobName;
                 jobTitle.JobDesc= jobTitleList.JobDesc;
                 jobTitle.Salary= jobTitleList.Salary;
-                jobTitle.IsActive = jobTitleList.IsActive;
                 jobTitle.ModifiedDate = time;
                 db.Entry(jobTitle).State = EntityState.Modified;
                 db.SaveChanges();

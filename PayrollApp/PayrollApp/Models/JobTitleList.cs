@@ -25,7 +25,6 @@ namespace PayrollApp.Models
         public string JobName { get; set; }
         public string JobDesc { get; set; }
         public decimal Salary { get; set; }
-        public bool IsActive { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
     

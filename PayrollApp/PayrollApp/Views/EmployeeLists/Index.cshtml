@@ -26,9 +26,6 @@
         <th>
             Joining Date
         </th>
-        <th>
-            Current Employee
-        </th>
         <th></th>
     </tr>
 
@@ -48,9 +45,6 @@
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.JoiningDate)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.IsActive)
     </td>
     <td>
         @Html.ActionLink("Edit", "Edit", new { id = item.EmployeeCode }) |

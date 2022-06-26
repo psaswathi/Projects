@@ -14,6 +14,8 @@ namespace PayrollApp.Controllers
     {
         private PayrollEntities db = new PayrollEntities();
 
+
+
         // GET: EmployeeLists
         public ActionResult Index()
         {
@@ -48,7 +50,7 @@ namespace PayrollApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,EmployeeCode,EmployeeName,JobCode,JoiningDate,IsActive,CreatedDate,ModifiedDate")] EmployeeList employeeList)
+        public ActionResult Create(EmployeeList employeeList)
         {
             DateTime time = DateTime.Now;
             if (ModelState.IsValid)
@@ -95,7 +97,7 @@ namespace PayrollApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,EmployeeCode,EmployeeName,JobCode,JoiningDate,IsActive,CreatedDate,ModifiedDate")] EmployeeList employeeList)
+        public ActionResult Edit(EmployeeList employeeList)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +112,6 @@ namespace PayrollApp.Controllers
                     employee.EmployeeName = employeeList.EmployeeName;
                     employee.JobCode= employeeList.JobCode;
                     employee.JoiningDate = employeeList.JoiningDate;
-                    employee.IsActive = employeeList.IsActive;
                     employee.ModifiedDate = DateTime.Now;
                 }
 

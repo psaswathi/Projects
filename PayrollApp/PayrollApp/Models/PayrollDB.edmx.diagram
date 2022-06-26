@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="dc7e9d1cfb4c400c96581a0d375319dd" Name="Diagram1">
-        <EntityTypeShape EntityType="PayrollModel.EmployeeList" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="PayrollModel.EmployeeList" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="PayrollModel.JobTitleList" Width="1.5" PointX="0.75" PointY="1" />
         <AssociationConnector Association="PayrollModel.FK_EmployeeList" />
       </Diagram>
