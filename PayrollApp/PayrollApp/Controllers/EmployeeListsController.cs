@@ -34,6 +34,8 @@ namespace PayrollApp.Controllers
             if (ModelState.IsValid)
             {
                 EmployeePayroll employeePayroll = FetchEmployeePayroll(payroll);
+
+                ViewBag.MonthSelected = payroll.MonthSelected;
                 return View("EmployeePayroll", employeePayroll);
 
             }
@@ -91,25 +93,19 @@ namespace PayrollApp.Controllers
             return employeePayroll;
         }
 
-
-        public ActionResult DownloadReport()
+        [HttpGet]
+        public ActionResult DownloadReport(CalculatePayroll payroll)
         {
+            EmployeePayroll employeePayroll = FetchEmployeePayroll(payroll);
+
             ReportDocument report = new ReportDocument();
-            //try
-            //{
-            //    throw new Exception(Path.Combine(Server.MapPath("~/Reports"), "AssetInventoryReport.rpt"));
-            //}
-            //catch(Exception ex)
-            //{
-            //    ExceptionLogging.LogError(ex);
-            //}
+
+            var reportData = new List<EmployeePayroll>();
+            reportData.Add(employeePayroll);
 
             report.Load(Path.Combine(Server.MapPath("~/Reports"), "MonthlyPayroll.rpt"));            
-            report.SetDataSource(ds.Tables[0]);
+            report.SetDataSource(reportData);
             
-
-            report.SetParameterValue("ReportTitle", "Asset Inventory Report");
-
             Stream s = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
             var memoryStream = new MemoryStream();
             s.CopyTo(memoryStream);

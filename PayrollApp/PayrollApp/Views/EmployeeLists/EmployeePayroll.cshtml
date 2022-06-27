@@ -7,31 +7,6 @@
 <h2></h2>
 
 <div>
-    @*<h4>Employee: @Model.EmployeeCode - @Model.EmployeeName</h4>
-        <hr />*@
-    @*<dl class="dl-horizontal">
-
-            <dt>
-                Employee Name
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.EmployeeName)
-            </dd>
-
-            <dt>
-                Employee Code
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.EmployeeCode)
-            </dd>
-
-
-
-        </dl>*@
-
-
     <div class="form-horizontal">
         <div class="box-body">
             <div class="form-group form-group-box">
@@ -108,18 +83,28 @@
                 </div>
                 <div class="col-sm-6">
                     @*<div class="col-sm-12">
-                        @Html.LabelFor(model => model.Tax, "Tax", htmlAttributes: new { @class = "control-label" })
-                        <b>: </b>
-                        @Html.DisplayFor(model => model.Tax)
-                    </div>*@
+                            @Html.LabelFor(model => model.Tax, "Tax", htmlAttributes: new { @class = "control-label" })
+                            <b>: </b>
+                            @Html.DisplayFor(model => model.Tax)
+                        </div>*@
                 </div>
             </div>
         </div>
     </div>
-
-
+    <hr/>
+    <p>
+        @using (Html.BeginForm("DownloadReport", "EmployeeLists",FormMethod.Get, new { target = "_blank" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.EmployeeCode)
+            <input type="hidden" value="@Model.NumberOfHoursWorked" id="TotalHours" name="TotalHours" />
+            <input type="hidden" value="@ViewBag.MonthSelected" id="MonthSelected" name="MonthSelected" />
+            <input type="submit" value="Download" class="btn btn-default" />
+        }
+    </p>
+    <hr/>
 </div>
 <p>
     @*@Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeCode }) |*@
-    @Html.ActionLink("Back", "CalculatePayroll")
+    @Html.ActionLink("Back", "CalculatePayroll")    
 </p>
