@@ -9,6 +9,6 @@ namespace PayrollApp.Models
     {
         public int EmployeeCode { get; set; }
         public DateTime MonthSelected { get; set; }
-        public decimal TotalHours { get; set; }
+        public int TotalHours { get; set; }
     }
 }

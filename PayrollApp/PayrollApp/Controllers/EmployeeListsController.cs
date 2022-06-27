@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CrystalDecisions.CrystalReports.Engine;
 using PayrollApp.Models;
 
 namespace PayrollApp.Controllers
@@ -24,28 +26,109 @@ namespace PayrollApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CalculatePayroll(CalculatePayroll payroll)
         {
-            //DateTime time = DateTime.Now;
-            //if (ModelState.IsValid)
-            //{
-            //    var lastEmpID = db.EmployeeLists.OrderByDescending(i => i.ID).FirstOrDefault();
-            //    if (lastEmpID == null)
-            //    {
-            //        employeeList.EmployeeCode = 100000 + 1;
-            //    }
-            //    else
-            //    {
-            //        employeeList.EmployeeCode = 100000 + lastEmpID.ID + 1;
-            //    }
 
-            //    employeeList.CreatedDate = time;
-            //    employeeList.ModifiedDate = time;
-            //    db.EmployeeLists.Add(employeeList);
-            //    db.SaveChanges();
-            //    return RedirectToAction("Index");
+            if (payroll.TotalHours <= 0)
+            {
+                ModelState.AddModelError("TotalHours", "Total Hours is wrong");
+            }
+            if (ModelState.IsValid)
+            {
+                EmployeePayroll employeePayroll = FetchEmployeePayroll(payroll);
+                return View("EmployeePayroll", employeePayroll);
+
+            }
+            ViewBag.EmployeeCode = new SelectList(db.EmployeeLists, "EmployeeCode", "EmployeeName");
+            return View(payroll);
+        }
+
+        private EmployeePayroll FetchEmployeePayroll(CalculatePayroll payroll)
+        {
+            var employee = db.EmployeeLists.Find(payroll.EmployeeCode);
+            EmployeePayroll employeePayroll = new EmployeePayroll
+            {
+                EmployeeName = employee.EmployeeName,
+                EmployeeCode = payroll.EmployeeCode,
+                DateOfJoining = employee.JoiningDate,
+                TotalYears = (payroll.MonthSelected - employee.JoiningDate).TotalDays / 365,
+                PayrollMonth = payroll.MonthSelected.ToString("MMM") + " " + payroll.MonthSelected.ToString("yyyy")
+
+            };
+
+            //Calculate current wage
+            decimal currentHourlyWages = employee.JobTitleList.Salary;
+
+            int totalYearsCompleted = Convert.ToInt32(Math.Floor(employeePayroll.TotalYears));
+
+            for (int i = 0; i < totalYearsCompleted; i++)
+            {
+                currentHourlyWages += (currentHourlyWages * 0.1m);
+            }
+
+            employeePayroll.HourlySalary = currentHourlyWages;
+            employeePayroll.NumberOfHoursWorked = payroll.TotalHours;
+
+            decimal totalPay = currentHourlyWages * payroll.TotalHours;
+            employeePayroll.BasicPay = totalPay * 0.64m;
+            employeePayroll.HousingAllowance = totalPay * 0.24m;
+            employeePayroll.TransportAllowance = totalPay * 0.12m;
+
+            if (employeePayroll.BasicPay > 1000)
+            {
+                employeePayroll.TaxableAmount = employeePayroll.BasicPay - 1000;
+                employeePayroll.Tax = employeePayroll.TaxableAmount * 0.30m;
+            }
+            else
+            {
+                employeePayroll.TaxableAmount = 0;
+                employeePayroll.Tax = 0;
+            }
+
+            employeePayroll.TotalPay = employeePayroll.BasicPay +
+                employeePayroll.HousingAllowance +
+                employeePayroll.TransportAllowance -
+                employeePayroll.Tax;
+
+            return employeePayroll;
+        }
+
+
+        public ActionResult DownloadReport()
+        {
+            ReportDocument report = new ReportDocument();
+            //try
+            //{
+            //    throw new Exception(Path.Combine(Server.MapPath("~/Reports"), "AssetInventoryReport.rpt"));
+            //}
+            //catch(Exception ex)
+            //{
+            //    ExceptionLogging.LogError(ex);
             //}
 
-            ViewBag.Employee = new SelectList(db.EmployeeLists, "EmployeeCode", "EmployeeName");
-            return View(payroll);
+            report.Load(Path.Combine(Server.MapPath("~/Reports"), "MonthlyPayroll.rpt"));            
+            report.SetDataSource(ds.Tables[0]);
+            
+
+            report.SetParameterValue("ReportTitle", "Asset Inventory Report");
+
+            Stream s = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            var memoryStream = new MemoryStream();
+            s.CopyTo(memoryStream);
+
+            byte[] byteContent = memoryStream.ToArray();
+            FileResult file = this.File(byteContent, "application/pdf");
+
+            //Crystal Report Generation END-------------------------------------------------------------------
+            return file;
+        }
+
+        public ActionResult EmployeePayroll(EmployeePayroll employeePayroll)
+        {
+            if (employeePayroll.EmployeeCode <= 0)
+            {
+                ViewBag.EmployeeCode = new SelectList(db.EmployeeLists, "EmployeeCode", "EmployeeName");
+                return View("CalculatePayroll");
+            }
+            return View(employeePayroll);
         }
 
         // GET: EmployeeLists

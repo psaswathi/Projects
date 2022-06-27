@@ -1,0 +1,125 @@
+﻿@model PayrollApp.Models.EmployeePayroll
+
+@{
+    ViewBag.Title = "Employee Payroll";
+}
+
+<h2></h2>
+
+<div>
+    @*<h4>Employee: @Model.EmployeeCode - @Model.EmployeeName</h4>
+        <hr />*@
+    @*<dl class="dl-horizontal">
+
+            <dt>
+                Employee Name
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EmployeeName)
+            </dd>
+
+            <dt>
+                Employee Code
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EmployeeCode)
+            </dd>
+
+
+
+        </dl>*@
+
+
+    <div class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group form-group-box">
+                <div class="col-sm-6">
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.EmployeeName, "Employee Name", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.EmployeeName)
+                    </div>
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.EmployeeCode, "Employee Code", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.EmployeeCode)
+                    </div>
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.DateOfJoining, "Joining Date", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.DateOfJoining)
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.PayrollMonth, "Payroll Month", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.PayrollMonth)
+                    </div>
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.NumberOfHoursWorked, "No.Of hours Worked", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.NumberOfHoursWorked)
+                    </div>
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.HourlySalary, "Hourly Salary", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.HourlySalary)
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group form-group-box">
+                <div class="col-sm-6">
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.BasicPay, "Basic Pay", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.BasicPay)
+                    </div>
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.HousingAllowance, "Housing Allowance", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.HousingAllowance)
+                    </div>
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.TransportAllowance, "Transport Allowance", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.TransportAllowance)
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.Tax, "Tax", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.Tax)
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group form-group-box">
+                <div class="col-sm-6">
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.TotalPay, "Net Salary", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.TotalPay)
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    @*<div class="col-sm-12">
+                        @Html.LabelFor(model => model.Tax, "Tax", htmlAttributes: new { @class = "control-label" })
+                        <b>: </b>
+                        @Html.DisplayFor(model => model.Tax)
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeCode }) |*@
+    @Html.ActionLink("Back", "CalculatePayroll")
+</p>

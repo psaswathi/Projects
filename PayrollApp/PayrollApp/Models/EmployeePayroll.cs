@@ -12,8 +12,10 @@ namespace PayrollApp.Models
         public int EmployeeCode { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime DateOfJoining { get; set; }
+        public double TotalYears { get; set; }
         public string PayrollMonth { get; set; }
         public int NumberOfHoursWorked { get; set; }
+        public decimal HourlySalary { get; set; }
         public decimal BasicPay { get; set; }
         public decimal HousingAllowance { get; set; }
         public decimal TransportAllowance { get; set; }
